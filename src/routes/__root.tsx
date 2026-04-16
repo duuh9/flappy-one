@@ -2,6 +2,7 @@ import { Outlet, createRootRoute, HeadContent, Scripts, Link } from "@tanstack/r
 import appCss from "../styles.css?url";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppShell } from "@/components/AppShell";
+import { AuthScreen } from "@/components/AuthScreen";
 import { Toaster } from "@/components/ui/sonner";
 import { motion } from "framer-motion";
 
@@ -73,11 +74,7 @@ function Gate() {
     );
   }
 
-  if (!user) {
-    // Lazy import — evita ciclos
-    const AuthScreen = require("@/components/AuthScreen").AuthScreen;
-    return <AuthScreen />;
-  }
+  if (!user) return <AuthScreen />;
 
   return (
     <AppShell>
