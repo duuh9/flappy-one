@@ -87,6 +87,7 @@ export type Database = {
           display_name: string | null
           id: string
           invite_code: string | null
+          last_insight_read_date: string | null
           last_log_date: string | null
           last_period_start: string | null
           partner_id: string | null
@@ -101,6 +102,7 @@ export type Database = {
           display_name?: string | null
           id: string
           invite_code?: string | null
+          last_insight_read_date?: string | null
           last_log_date?: string | null
           last_period_start?: string | null
           partner_id?: string | null
@@ -115,6 +117,7 @@ export type Database = {
           display_name?: string | null
           id?: string
           invite_code?: string | null
+          last_insight_read_date?: string | null
           last_log_date?: string | null
           last_period_start?: string | null
           partner_id?: string | null
@@ -132,6 +135,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      quiz_attempts: {
+        Row: {
+          correct_count: number
+          created_at: string
+          id: string
+          points_awarded: number
+          question_count: number
+          quiz_id: string
+          user_id: string
+        }
+        Insert: {
+          correct_count: number
+          created_at?: string
+          id?: string
+          points_awarded?: number
+          question_count: number
+          quiz_id: string
+          user_id: string
+        }
+        Update: {
+          correct_count?: number
+          created_at?: string
+          id?: string
+          points_awarded?: number
+          question_count?: number
+          quiz_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_badges: {
+        Row: {
+          badge_id: string
+          id: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          id?: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          id?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
     }
     Views: {

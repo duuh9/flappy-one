@@ -11,6 +11,7 @@ export type Profile = {
   points: number;
   streak: number;
   last_log_date: string | null;
+  last_insight_read_date: string | null;
 };
 
 export function useProfile() {
