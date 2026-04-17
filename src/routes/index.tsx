@@ -10,10 +10,16 @@ import { useAuth } from "@/contexts/AuthContext";
 import { getCyclePhase, PHASE_LABEL } from "@/lib/cycle";
 import { insightOfTheDay } from "@/lib/insights";
 import { StreakBadge } from "@/components/StreakBadge";
-import { CycleCalendar } from "@/components/CycleCalendar";
+import { WeekStrip } from "@/components/WeekStrip";
 import { QuickLogDrawer } from "@/components/QuickLogDrawer";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -30,8 +36,14 @@ function HomePage() {
   const [periodDate, setPeriodDate] = useState("");
 
   const insight = insightOfTheDay();
-  const lastPeriod = profile?.last_period_start ? new Date(profile.last_period_start + "T00:00:00") : null;
-  const cycle = getCyclePhase(lastPeriod, profile?.cycle_length ?? 28, profile?.period_length ?? 5);
+  const lastPeriod = profile?.last_period_start
+    ? new Date(profile.last_period_start + "T00:00:00")
+    : null;
+  const cycle = getCyclePhase(
+    lastPeriod,
+    profile?.cycle_length ?? 28,
+    profile?.period_length ?? 5,
+  );
   const loggedDates = new Set(logs.map((l) => l.log_date));
 
   return (
@@ -39,10 +51,10 @@ function HomePage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">
+          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
             {format(new Date(), "EEEE, d 'de' MMMM", { locale: ptBR })}
           </p>
-          <h1 className="mt-1 font-display text-3xl font-light">
+          <h1 className="mt-1 font-display text-3xl font-light text-balance">
             Olá, <span className="text-primary">{profile?.display_name || "amor"}</span>
           </h1>
         </div>
@@ -80,7 +92,12 @@ function HomePage() {
               </div>
             </DialogContent>
           </Dialog>
-          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full" onClick={() => signOut()}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 rounded-full"
+            onClick={() => signOut()}
+          >
             <LogOut className="h-4 w-4 text-muted-foreground" />
           </Button>
         </div>
@@ -88,28 +105,34 @@ function HomePage() {
 
       <StreakBadge streak={profile?.streak ?? 0} points={profile?.points ?? 0} />
 
-      {/* Card de fase + insight */}
+      {/* Card de fase */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-warm p-6 text-primary-foreground shadow-glow"
+        className="relative overflow-hidden rounded-[2rem] bg-gradient-warm p-7 text-primary-foreground shadow-glow"
       >
-        <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/15 blur-2xl" />
+        <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-white/20 blur-3xl" />
+        <div className="absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-white/15 blur-3xl" />
         <div className="relative">
           {lastPeriod ? (
             <>
-              <p className="text-xs uppercase tracking-wider opacity-80">Fase atual</p>
-              <h2 className="mt-1 font-display text-2xl font-light">{PHASE_LABEL[cycle.phase]}</h2>
-              <p className="mt-1 text-sm opacity-90">
-                Dia {cycle.dayInCycle} do ciclo · {cycle.daysUntilNext}d até a próxima menstruação
+              <p className="text-[11px] uppercase tracking-wider opacity-80">Fase atual</p>
+              <h2 className="mt-1 font-display text-3xl font-light">
+                {PHASE_LABEL[cycle.phase]}
+              </h2>
+              <p className="mt-2 text-sm opacity-90">
+                Dia {cycle.dayInCycle} do ciclo
+                {cycle.daysUntilNext != null && (
+                  <> · {cycle.daysUntilNext}d até a próxima menstruação</>
+                )}
               </p>
             </>
           ) : (
             <>
-              <p className="text-xs uppercase tracking-wider opacity-80">Bem-vinda</p>
+              <p className="text-[11px] uppercase tracking-wider opacity-80">Bem-vinda</p>
               <h2 className="mt-1 font-display text-2xl font-light">Configure seu ciclo</h2>
-              <p className="mt-1 text-sm opacity-90">
+              <p className="mt-2 text-sm opacity-90">
                 Toque na engrenagem acima para começar.
               </p>
             </>
@@ -117,29 +140,47 @@ function HomePage() {
         </div>
       </motion.div>
 
-      {/* Insight do dia */}
+      {/* Insight do dia — destaque */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
-        className="rounded-3xl border border-border/60 bg-card/80 p-6 shadow-soft backdrop-blur"
+        className="relative overflow-hidden rounded-[2rem] border border-border/60 bg-gradient-sand p-6 shadow-soft"
       >
-        <div className="mb-2 flex items-center gap-2">
-          <span className="text-2xl">{insight.emoji}</span>
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Insight do dia</p>
+        <div className="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-white/50 blur-3xl" />
+        <div className="relative">
+          <div className="mb-3 flex items-center gap-2">
+            <p className="text-[11px] font-medium uppercase tracking-wider text-primary">
+              Insight do dia
+            </p>
+          </div>
+          <div className="flex items-start gap-4">
+            <motion.span
+              animate={{ rotate: [0, -6, 6, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="text-4xl"
+            >
+              {insight.emoji}
+            </motion.span>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-display text-xl font-light leading-tight text-balance">
+                {insight.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/75">{insight.body}</p>
+              <p className="mt-3 text-[11px] italic text-muted-foreground/80">
+                — {insight.source}
+              </p>
+            </div>
+          </div>
         </div>
-        <h3 className="font-display text-xl font-light">{insight.title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{insight.body}</p>
-        <p className="mt-3 text-[11px] italic text-muted-foreground/80">— {insight.source}</p>
       </motion.div>
 
-      {/* Calendário compacto */}
-      <CycleCalendar
+      {/* Semana resumida */}
+      <WeekStrip
         lastPeriodStart={lastPeriod}
         cycleLength={profile?.cycle_length ?? 28}
         periodLength={profile?.period_length ?? 5}
         loggedDates={loggedDates}
-        compact
       />
 
       {/* FAB */}

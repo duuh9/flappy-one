@@ -41,46 +41,47 @@
 }
 
 :root {
-  --radius: 1rem;
+  --radius: 1.25rem;
 
-  /* Blush & Lavender palette */
-  --background: oklch(0.99 0.005 350);
-  --foreground: oklch(0.32 0.04 320);
+  /* Paleta carinhosa: rosa #FF8FB1, lilás #C8A2E0, bege #F5EDE1, branco */
+  --background: oklch(0.985 0.006 60);          /* off-white com toque bege */
+  --foreground: oklch(0.30 0.04 340);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.32 0.04 320);
+  --card-foreground: oklch(0.30 0.04 340);
 
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.32 0.04 320);
+  --popover-foreground: oklch(0.30 0.04 340);
 
-  --primary: oklch(0.68 0.13 320);            /* lilás suave */
-  --primary-foreground: oklch(0.99 0.005 350);
+  --primary: oklch(0.78 0.10 320);              /* lilás #C8A2E0 */
+  --primary-foreground: oklch(0.99 0.005 60);
 
-  --secondary: oklch(0.95 0.025 350);         /* rosa muito claro */
-  --secondary-foreground: oklch(0.42 0.08 340);
+  --secondary: oklch(0.96 0.02 60);             /* bege claro */
+  --secondary-foreground: oklch(0.40 0.06 340);
 
-  --muted: oklch(0.96 0.012 340);
+  --muted: oklch(0.97 0.012 60);
   --muted-foreground: oklch(0.55 0.04 330);
 
-  --accent: oklch(0.88 0.07 350);             /* blush */
-  --accent-foreground: oklch(0.32 0.06 340);
+  --accent: oklch(0.82 0.11 0);                 /* rosa #FF8FB1 */
+  --accent-foreground: oklch(0.99 0.005 60);
 
   --destructive: oklch(0.62 0.18 25);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.93 0.02 340);
-  --input: oklch(0.95 0.015 340);
-  --ring: oklch(0.68 0.13 320);
+  --border: oklch(0.93 0.015 340);
+  --input: oklch(0.95 0.012 340);
+  --ring: oklch(0.78 0.10 320);
 
-  --blush: oklch(0.88 0.07 350);
-  --lavender: oklch(0.78 0.10 310);
-  --sand: oklch(0.95 0.02 80);
-  --rose-deep: oklch(0.58 0.14 350);
+  --blush: oklch(0.82 0.11 0);                  /* #FF8FB1 */
+  --lavender: oklch(0.78 0.10 320);             /* #C8A2E0 */
+  --sand: oklch(0.94 0.02 75);                  /* #F5EDE1 */
+  --rose-deep: oklch(0.62 0.16 0);
 
-  --gradient-soft: linear-gradient(135deg, oklch(0.96 0.03 350), oklch(0.93 0.06 310));
-  --gradient-warm: linear-gradient(135deg, oklch(0.92 0.05 350) 0%, oklch(0.88 0.07 320) 100%);
-  --shadow-soft: 0 8px 30px -12px oklch(0.68 0.13 320 / 0.18);
-  --shadow-glow: 0 10px 40px -10px oklch(0.78 0.10 310 / 0.35);
+  --gradient-soft: linear-gradient(135deg, oklch(0.96 0.025 350) 0%, oklch(0.94 0.05 320) 100%);
+  --gradient-warm: linear-gradient(135deg, oklch(0.86 0.10 0) 0%, oklch(0.78 0.10 320) 100%);
+  --gradient-sand: linear-gradient(160deg, oklch(0.97 0.018 75) 0%, oklch(0.93 0.04 350) 100%);
+  --shadow-soft: 0 8px 28px -14px oklch(0.62 0.10 340 / 0.18);
+  --shadow-glow: 0 16px 48px -16px oklch(0.78 0.12 320 / 0.40);
 }
 
 .dark {
@@ -117,6 +118,8 @@
 @layer utilities {
   .bg-gradient-soft { background-image: var(--gradient-soft); }
   .bg-gradient-warm { background-image: var(--gradient-warm); }
+  .bg-gradient-sand { background-image: var(--gradient-sand); }
   .shadow-soft { box-shadow: var(--shadow-soft); }
   .shadow-glow { box-shadow: var(--shadow-glow); }
+  .text-balance { text-wrap: balance; }
 }
