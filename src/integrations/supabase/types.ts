@@ -50,14 +50,46 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_messages: {
+        Row: {
+          body: string
+          created_at: string
+          emoji: string | null
+          id: string
+          read_at: string | null
+          recipient_id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          read_at?: string | null
+          recipient_id: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          read_at?: string | null
+          recipient_id?: string
+          sender_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
           cycle_length: number | null
           display_name: string | null
           id: string
+          invite_code: string | null
           last_log_date: string | null
           last_period_start: string | null
+          partner_id: string | null
           period_length: number | null
           points: number
           streak: number
@@ -68,8 +100,10 @@ export type Database = {
           cycle_length?: number | null
           display_name?: string | null
           id: string
+          invite_code?: string | null
           last_log_date?: string | null
           last_period_start?: string | null
+          partner_id?: string | null
           period_length?: number | null
           points?: number
           streak?: number
@@ -80,21 +114,33 @@ export type Database = {
           cycle_length?: number | null
           display_name?: string | null
           id?: string
+          invite_code?: string | null
           last_log_date?: string | null
           last_period_start?: string | null
+          partner_id?: string | null
           period_length?: number | null
           points?: number
           streak?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_invite_code: { Args: never; Returns: string }
+      pair_with_code: { Args: { _code: string }; Returns: Json }
+      unpair: { Args: never; Returns: Json }
     }
     Enums: {
       [_ in never]: never
