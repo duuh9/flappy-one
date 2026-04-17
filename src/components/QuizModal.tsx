@@ -65,7 +65,7 @@ export function QuizModal({ quiz, onClose }: Props) {
       return;
     }
     // Fim
-    const result = await submit(quiz.id, total, correctCount + (isCorrect && picked === current.correctIndex ? 0 : 0));
+    const result = await submit(quiz.id, total, correctCount);
     setPointsAwarded(result.pointsAwarded);
     if (!result.alreadyDone && result.pointsAwarded > 0) {
       toast.success(`+${result.pointsAwarded} pontos!`, { icon: "✨" });
