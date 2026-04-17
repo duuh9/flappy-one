@@ -2,6 +2,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { Home, Calendar, Sparkles, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useUnreadBadge } from "@/hooks/usePartnerMessages";
 
 const TABS = [
   { to: "/", label: "Home", icon: Home },
@@ -13,6 +14,7 @@ const TABS = [
 export function AppShell({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const path = location.pathname;
+  const unread = useUnreadBadge();
 
   return (
     <div className="min-h-screen bg-background">
@@ -47,7 +49,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   />
                 )}
                 <Icon className="relative h-4 w-4" />
-                <span className="relative">{tab.label}</span>
+                <span className="relative flex-1">{tab.label}</span>
+                {tab.to === "/nos-dois" && unread > 0 && (
+                  <span className="relative ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-semibold text-primary-foreground">
+                    {unread > 9 ? "9+" : unread}
+                  </span>
+                )}
               </Link>
             );
           })}
@@ -78,11 +85,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   animate={{ scale: active ? 1.1 : 1, y: active ? -2 : 0 }}
                   transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   className={cn(
-                    "flex h-9 w-9 items-center justify-center rounded-2xl transition-colors",
+                    "relative flex h-9 w-9 items-center justify-center rounded-2xl transition-colors",
                     active ? "bg-gradient-warm text-primary-foreground shadow-soft" : "text-muted-foreground",
                   )}
                 >
                   <Icon className="h-4 w-4" />
+                  {tab.to === "/nos-dois" && unread > 0 && (
+                    <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[9px] font-semibold text-primary-foreground ring-2 ring-card">
+                      {unread > 9 ? "9+" : unread}
+                    </span>
+                  )}
                 </motion.div>
                 <span className={cn(active ? "text-foreground" : "text-muted-foreground")}>{tab.label}</span>
               </Link>

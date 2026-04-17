@@ -3,10 +3,14 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Sparkles, MessageCircleHeart } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
+import { usePartner } from "@/hooks/usePartner";
 import { getCyclePhase, PHASE_LABEL } from "@/lib/cycle";
 import { PARTNER_TIPS, HER_TIPS, SWEET_NOTES } from "@/lib/partner-tips";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { PairCard } from "@/components/PairCard";
+import { PartnerStatusCard } from "@/components/PartnerStatusCard";
+import { MessagesPanel } from "@/components/MessagesPanel";
 
 export const Route = createFileRoute("/nos-dois")({
   component: TogetherPage,
@@ -17,11 +21,21 @@ type Side = "ela" | "ele";
 
 function TogetherPage() {
   const { profile } = useProfile();
+  const { partnerId, partner, partnerLastLog } = usePartner();
   const [side, setSide] = useState<Side>("ela");
   const [noteIdx, setNoteIdx] = useState(() => Math.floor(Math.random() * SWEET_NOTES.length));
 
-  const lastPeriod = profile?.last_period_start ? new Date(profile.last_period_start + "T00:00:00") : null;
-  const cycle = getCyclePhase(lastPeriod, profile?.cycle_length ?? 28, profile?.period_length ?? 5);
+  // Quando pareado, a fase exibida é a do parceiro (se existir), senão a própria.
+  // Isso permite que o namorado veja a fase dela mesmo sem ter ciclo configurado.
+  const referenceProfile = partner ?? profile;
+  const lastPeriod = referenceProfile?.last_period_start
+    ? new Date(referenceProfile.last_period_start + "T00:00:00")
+    : null;
+  const cycle = getCyclePhase(
+    lastPeriod,
+    referenceProfile?.cycle_length ?? 28,
+    referenceProfile?.period_length ?? 5,
+  );
 
   const tips = useMemo(
     () => (side === "ela" ? HER_TIPS[cycle.phase] : PARTNER_TIPS[cycle.phase]),
@@ -39,6 +53,23 @@ function TogetherPage() {
           </p>
         )}
       </div>
+
+      {/* Pareamento */}
+      <PairCard />
+
+      {/* Status do parceiro (se houver) */}
+      {partner && <PartnerStatusCard partner={partner} lastLog={partnerLastLog} />}
+
+      {/* Recadinhos (apenas quando pareado) */}
+      {partnerId && (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 px-1">
+            <MessageCircleHeart className="h-3.5 w-3.5 text-primary" />
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">Recadinhos</p>
+          </div>
+          <MessagesPanel partnerId={partnerId} />
+        </div>
+      )}
 
       {/* Toggle Ela / Ele */}
       <div className="grid grid-cols-2 gap-2 rounded-2xl bg-secondary p-1">
@@ -93,7 +124,7 @@ function TogetherPage() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Recadinho surpresa */}
+      {/* Recadinho surpresa (biblioteca local) */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -103,8 +134,8 @@ function TogetherPage() {
         <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/40 blur-2xl" />
         <div className="relative">
           <div className="mb-2 flex items-center gap-2">
-            <MessageCircleHeart className="h-4 w-4 text-rose-deep" style={{ color: "var(--rose-deep)" }} />
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Recadinho</p>
+            <MessageCircleHeart className="h-4 w-4 text-primary" />
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">Inspiração</p>
           </div>
           <AnimatePresence mode="wait">
             <motion.p
@@ -124,7 +155,7 @@ function TogetherPage() {
             className="mt-3 h-8 rounded-full px-3 text-xs"
           >
             <Heart className="mr-1.5 h-3 w-3" fill="currentColor" />
-            Outro recadinho
+            Outra ideia
           </Button>
         </div>
       </motion.div>
