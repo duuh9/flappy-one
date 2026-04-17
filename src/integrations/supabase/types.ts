@@ -139,6 +139,7 @@ export type Database = {
     }
     Functions: {
       generate_invite_code: { Args: never; Returns: string }
+      get_partner_id: { Args: never; Returns: string }
       pair_with_code: { Args: { _code: string }; Returns: Json }
       unpair: { Args: never; Returns: Json }
     }
