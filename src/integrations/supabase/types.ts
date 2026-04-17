@@ -50,6 +50,36 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_guesses: {
+        Row: {
+          about_id: string
+          created_at: string
+          guess_date: string
+          guesser_id: string
+          id: string
+          mood: string
+          mood_intensity: number | null
+        }
+        Insert: {
+          about_id: string
+          created_at?: string
+          guess_date: string
+          guesser_id: string
+          id?: string
+          mood: string
+          mood_intensity?: number | null
+        }
+        Update: {
+          about_id?: string
+          created_at?: string
+          guess_date?: string
+          guesser_id?: string
+          id?: string
+          mood?: string
+          mood_intensity?: number | null
+        }
+        Relationships: []
+      }
       partner_messages: {
         Row: {
           body: string
@@ -76,6 +106,33 @@ export type Database = {
           id?: string
           read_at?: string | null
           recipient_id?: string
+          sender_id?: string
+        }
+        Relationships: []
+      }
+      partner_nudges: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          recipient_id: string
+          seen_at: string | null
+          sender_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          recipient_id: string
+          seen_at?: string | null
+          sender_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          recipient_id?: string
+          seen_at?: string | null
           sender_id?: string
         }
         Relationships: []
@@ -162,6 +219,36 @@ export type Database = {
           points_awarded?: number
           question_count?: number
           quiz_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      shared_diary: {
+        Row: {
+          body: string
+          created_at: string
+          entry_date: string
+          id: string
+          mood: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          entry_date: string
+          id?: string
+          mood?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          entry_date?: string
+          id?: string
+          mood?: string | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
