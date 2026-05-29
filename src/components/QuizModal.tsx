@@ -200,7 +200,7 @@ export function QuizModal({ quiz, onClose }: QuizModalProps) {
           </Button>
           <Button onClick={handleNext} disabled={!isAnswered || isSubmitting} className="flex-1">
             {isSubmitting ? (
-              "Salvando..."
+              "Salvando...."
             ) : currentQuestion === quiz.questions.length - 1 ? (
               <>
                 Finalizar <Check className="ml-2 h-4 w-4" />
