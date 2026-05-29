@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const perguntas = [
   "Como você acha que ela está se sentindo hoje?",
@@ -8,7 +8,13 @@ const perguntas = [
 
 const opcoes = [
   ["😊 Feliz", "🥱 Cansada", "😣 Irritada", "🤗 Quer colo", "😌 Tranquila"],
-  ["Mandar mensagem carinhosa", "Fazer um café/chá", "Dar um abraço longo", "Cozinhar algo gostoso", "Deixar ela quietinha"],
+  [
+    "Mandar mensagem carinhosa",
+    "Fazer um café/chá",
+    "Dar um abraço longo",
+    "Cozinhar algo gostoso",
+    "Deixar ela quietinha",
+  ],
   ["Palavras de afirmação", "Tempo de qualidade", "Presentes", "Atos de serviço", "Toque físico"],
 ];
 
@@ -33,9 +39,7 @@ export default function QuizCasal() {
         <h3 className="text-2xl font-semibold text-pink-700">Quiz do Casal</h3>
       </div>
 
-      <p className="text-gray-600 mb-6">
-        Responda como você acha que ela está se sentindo hoje
-      </p>
+      <p className="text-gray-600 mb-6">Responda como você acha que ela está se sentindo hoje</p>
 
       {!mostrarResultado ? (
         <div className="space-y-8">
@@ -49,8 +53,8 @@ export default function QuizCasal() {
                     onClick={() => responder(index, i)}
                     className={`w-full p-4 rounded-2xl text-left transition-all ${
                       respostas[index] === i
-                        ? 'bg-pink-500 text-white'
-                        : 'bg-pink-50 hover:bg-pink-100 text-gray-700'
+                        ? "bg-pink-500 text-white"
+                        : "bg-pink-50 hover:bg-pink-100 text-gray-700"
                     }`}
                   >
                     {opcao}
