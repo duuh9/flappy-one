@@ -1,11 +1,12 @@
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, AlertCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export function AuthScreen() {
   const { signIn, signUp } = useAuth();
@@ -14,19 +15,65 @@ export function AuthScreen() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Validação de email
+  const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+  // Validar formulário
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!email.trim()) {
+      newErrors.email = "E-mail é obrigatório";
+    } else if (!isValidEmail(email)) {
+      newErrors.email = "E-mail inválido";
+    }
+
+    if (!password) {
+      newErrors.password = "Senha é obrigatória";
+    } else if (password.length < 6) {
+      newErrors.password = "Mínimo 6 caracteres";
+    }
+
+    if (mode === "signup") {
+      if (!name.trim()) {
+        newErrors.name = "Nome é obrigatório";
+      } else if (name.trim().length < 2) {
+        newErrors.name = "Nome deve ter pelo menos 2 caracteres";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      toast.error("Verifique os campos do formulário");
+      return;
+    }
+
     setLoading(true);
     const { error } =
       mode === "signin"
         ? await signIn(email, password)
-        : await signUp(email, password, name || email.split("@")[0]);
+        : await signUp(email, password, name.trim());
     setLoading(false);
+
     if (error) {
       toast.error(error.message);
+      if (error.message.includes("email")) {
+        setErrors({ email: error.message });
+      }
     } else if (mode === "signup") {
       toast.success("Conta criada! Você já pode entrar.");
+      setMode("signin");
+      setEmail("");
+      setPassword("");
+      setName("");
     }
   };
 
@@ -55,38 +102,103 @@ export function AuthScreen() {
             <Heart className="h-6 w-6 text-primary-foreground" fill="currentColor" />
           </div>
           <h1 className="font-display text-3xl font-light tracking-tight">Nós Dois</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Ciclo, humor e relação — com leveza.
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">Ciclo, humor e relação — com leveza.</p>
         </div>
 
-        <form onSubmit={submit} className="space-y-4 rounded-3xl border border-border/60 bg-card/80 p-6 shadow-soft backdrop-blur">
+        <form
+          onSubmit={submit}
+          className="space-y-4 rounded-3xl border border-border/60 bg-card/80 p-6 shadow-soft backdrop-blur"
+        >
           {mode === "signup" && (
             <div className="space-y-1.5">
               <Label htmlFor="name">Como você se chama?</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Seu nome" />
+              <Input
+                id="name"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (errors.name) setErrors({ ...errors, name: "" });
+                }}
+                placeholder="Seu nome"
+                className={cn(errors.name && "border-red-500 focus-visible:ring-red-500")}
+              />
+              {errors.name && (
+                <p className="flex items-center gap-1.5 text-xs text-red-500">
+                  <AlertCircle className="h-3 w-3" />
+                  {errors.name}
+                </p>
+              )}
             </div>
           )}
           <div className="space-y-1.5">
             <Label htmlFor="email">E-mail</Label>
-            <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="voce@exemplo.com" />
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (errors.email) setErrors({ ...errors, email: "" });
+              }}
+              placeholder="voce@exemplo.com"
+              className={cn(errors.email && "border-red-500 focus-visible:ring-red-500")}
+            />
+            {errors.email && (
+              <p className="flex items-center gap-1.5 text-xs text-red-500">
+                <AlertCircle className="h-3 w-3" />
+                {errors.email}
+              </p>
+            )}
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="password">Senha</Label>
-            <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (errors.password) setErrors({ ...errors, password: "" });
+              }}
+              placeholder="••••••••"
+              className={cn(errors.password && "border-red-500 focus-visible:ring-red-500")}
+            />
+            {errors.password && (
+              <p className="flex items-center gap-1.5 text-xs text-red-500">
+                <AlertCircle className="h-3 w-3" />
+                {errors.password}
+              </p>
+            )}
+            {!errors.password && password && password.length < 6 && (
+              <p className="text-xs text-muted-foreground">
+                {password.length}/6 caracteres (mínimo necessário)
+              </p>
+            )}
           </div>
-          <Button type="submit" disabled={loading} className="h-11 w-full rounded-2xl bg-gradient-warm text-primary-foreground shadow-soft hover:opacity-90">
+          <Button
+            type="submit"
+            disabled={loading || !!Object.keys(errors).length}
+            className="h-11 w-full rounded-2xl bg-gradient-warm text-primary-foreground shadow-soft hover:opacity-90 disabled:opacity-50"
+          >
             {loading ? "Aguarde..." : mode === "signin" ? "Entrar" : "Criar conta"}
           </Button>
         </form>
 
         <button
           type="button"
-          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+          onClick={() => {
+            setMode(mode === "signin" ? "signup" : "signin");
+            setErrors({});
+            setEmail("");
+            setPassword("");
+            setName("");
+          }}
           className="mt-5 w-full text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           {mode === "signin" ? "Ainda não tem conta? " : "Já tem conta? "}
-          <span className="font-medium text-primary">{mode === "signin" ? "Criar agora" : "Entrar"}</span>
+          <span className="font-medium text-primary">
+            {mode === "signin" ? "Criar agora" : "Entrar"}
+          </span>
         </button>
       </motion.div>
     </div>
