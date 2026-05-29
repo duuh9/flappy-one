@@ -19,7 +19,7 @@ export function QuizModal({ quiz, onClose }: QuizModalProps) {
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [showExplanation, setShowExplanation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { saveAttempt } = useQuizzes();
+  const { submit } = useQuizzes();
 
   // Reset when quiz changes
   useEffect(() => {
@@ -28,7 +28,7 @@ export function QuizModal({ quiz, onClose }: QuizModalProps) {
       setSelectedAnswers({});
       setShowExplanation(false);
     }
-  }, [quiz?.id]);
+  }, [quiz]);
 
   if (!quiz) return null;
 
@@ -62,8 +62,14 @@ export function QuizModal({ quiz, onClose }: QuizModalProps) {
         ([qIdx, answer]) => answer === quiz.questions[Number(qIdx)].correctIndex,
       ).length;
 
-      await saveAttempt(quiz.id, correctCount, quiz.questions.length);
-      toast.success(`Quiz completo! ${correctCount}/${quiz.questions.length} acertos`);
+      const result = await submit(quiz.id, quiz.questions.length, correctCount);
+      if (result.alreadyDone) {
+        toast.info("Você já completou este quiz!");
+      } else {
+        toast.success(
+          `Quiz completo! ${correctCount}/${quiz.questions.length} acertos (${result.pointsAwarded} pts)`,
+        );
+      }
       onClose();
     } catch (error) {
       toast.error("Erro ao salvar resultado. Tente novamente.");
