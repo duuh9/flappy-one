@@ -40,6 +40,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { error };
     },
     signUp: async (email, password, displayName) => {
+      const ALLOWED = ["dudu07andrade23@gmail.com", "sabrinykmendes@gmail.com"];
+      if (!ALLOWED.includes(email)) {
+        return { error: new Error("Cadastro permitido apenas para contas autorizadas.") };
+      }
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -50,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
       return { error };
     },
+
     signOut: async () => {
       await supabase.auth.signOut();
     },

@@ -43,7 +43,7 @@
 :root {
   --radius: 1.25rem;
 
-  /* Paleta carinhosa: rosa #FF8FB1, lilás #C8A2E0, bege #F5EDE1, branco */
+  /* Paleta: Ametista #7B2CBF, lilás #C8A2E0, bege #F5EDE1, escuro */
   --background: oklch(0.985 0.006 60);          /* off-white com toque bege */
   --foreground: oklch(0.30 0.04 340);
 
@@ -62,7 +62,7 @@
   --muted: oklch(0.97 0.012 60);
   --muted-foreground: oklch(0.55 0.04 330);
 
-  --accent: oklch(0.82 0.11 0);                 /* rosa #FF8FB1 */
+  --accent: #7B2CBF;                 /* Ametista */
   --accent-foreground: oklch(0.99 0.005 60);
 
   --destructive: oklch(0.62 0.18 25);
@@ -72,7 +72,7 @@
   --input: oklch(0.95 0.012 340);
   --ring: oklch(0.78 0.10 320);
 
-  --blush: oklch(0.82 0.11 0);                  /* #FF8FB1 */
+  --blush: #7B2CBF;                  /* Ametista */
   --lavender: oklch(0.78 0.10 320);             /* #C8A2E0 */
   --sand: oklch(0.94 0.02 75);                  /* #F5EDE1 */
   --rose-deep: oklch(0.62 0.16 0);
@@ -97,7 +97,7 @@
   --secondary-foreground: oklch(0.96 0.01 340);
   --muted: oklch(0.26 0.02 320);
   --muted-foreground: oklch(0.72 0.03 330);
-  --accent: oklch(0.32 0.05 340);
+  --accent: #7B2CBF;
   --accent-foreground: oklch(0.96 0.01 340);
   --border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 12%);

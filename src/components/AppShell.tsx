@@ -8,7 +8,7 @@ const TABS = [
   { to: "/", label: "Home", icon: Home },
   { to: "/calendario", label: "Calendário", icon: Calendar },
   { to: "/insights", label: "Insights", icon: Sparkles },
-  { to: "/nos-dois", label: "Nós Dois", icon: Heart },
+  { to: "/nos-dois", label: "Fluppy", icon: Heart },
 ] as const;
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -24,7 +24,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-warm shadow-soft">
             <Heart className="h-4 w-4 text-primary-foreground" fill="currentColor" />
           </div>
-          <span className="font-display text-xl font-medium tracking-tight">Nós Dois</span>
+          <span className="font-display text-xl font-medium tracking-tight">Fluppy</span>
         </div>
         <nav className="flex-1 space-y-1 px-3">
           {TABS.map((tab) => {

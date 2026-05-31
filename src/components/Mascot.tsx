@@ -2,14 +2,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
 /**
- * Gatinha mascote — inspirada no LovBirdz, mas felina.
- * SVG inline + Framer Motion. Sem dependências externas, leve.
+ * Cachorrinho mascote — Fluppy (adaptado do artwork enviado).
+ * SVG inline + Framer Motion. Animações refletem os humores registrados.
  *
  * Estados de humor:
  *  - idle: piscando suavemente
- *  - happy: sorrindo + balançando (registro/quiz acertado)
- *  - celebrate: olhos brilhando + pulando (streak/badge)
- *  - sleepy: olhos meio fechados (sem streak)
+ *  - happy: abanando e sorrindo (registro/quiz acertado)
+ *  - celebrate: olhos brilhando + pulinhos (streak/badge)
+ *  - sleepy: olhos meio fechados (cansado)
  */
 export type MascotMood = "idle" | "happy" | "celebrate" | "sleepy";
 

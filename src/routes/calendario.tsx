@@ -10,7 +10,7 @@ import { getCyclePhase, PHASE_LABEL, PHASE_COLOR } from "@/lib/cycle";
 
 export const Route = createFileRoute("/calendario")({
   component: CalendarPage,
-  head: () => ({ meta: [{ title: "Calendário — Nós Dois" }] }),
+  head: () => ({ meta: [{ title: "Calendário — Fluppy" }] }),
 });
 
 function CalendarPage() {

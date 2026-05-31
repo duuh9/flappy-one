@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/insights")({
   component: InsightsPage,
-  head: () => ({ meta: [{ title: "Insights — Nós Dois" }] }),
+  head: () => ({ meta: [{ title: "Insights — Fluppy" }] }),
 });
 
 const CATEGORIES: (QuizCategory | "all")[] = ["all", "ciclo", "sintomas", "casal", "geral"];

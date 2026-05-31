@@ -33,10 +33,10 @@ export default function QuizCasal() {
   };
 
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm border border-pink-100 mt-6">
+    <div className="rounded-3xl p-6 shadow-sm border border-border/60 mt-6 bg-card/80">
       <div className="flex items-center gap-3 mb-5">
         <span className="text-3xl">❤️</span>
-        <h3 className="text-2xl font-semibold text-pink-700">Quiz do Casal</h3>
+        <h3 className="text-2xl font-semibold text-primary">Quiz do Casal</h3>
       </div>
 
       <p className="text-gray-600 mb-6">Responda como você acha que ela está se sentindo hoje</p>
@@ -53,8 +53,8 @@ export default function QuizCasal() {
                     onClick={() => responder(index, i)}
                     className={`w-full p-4 rounded-2xl text-left transition-all ${
                       respostas[index] === i
-                        ? "bg-pink-500 text-white"
-                        : "bg-pink-50 hover:bg-pink-100 text-gray-700"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-card/50 hover:bg-card/80 text-muted-foreground"
                     }`}
                   >
                     {opcao}
@@ -67,7 +67,7 @@ export default function QuizCasal() {
       ) : (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">❤️</div>
-          <p className="text-2xl font-medium text-pink-700 mb-3">
+          <p className="text-2xl font-medium text-primary mb-3">
             Obrigado por tentar entender ela melhor!
           </p>
           <p className="text-gray-600 max-w-xs mx-auto">

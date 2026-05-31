@@ -39,7 +39,7 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const { profile, update } = useProfile();
   const { logs } = useDailyLogs();
-  const { signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const { isUnlocked, badges, justUnlocked, clearJustUnlocked } = useBadges();
   const { claim: claimInsight } = useInsightReward();
   const { isDone: isQuizDone } = useQuizzes();
@@ -167,12 +167,14 @@ function HomePage() {
       >
         <Mascot mood={mascotMood} size="md" />
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] uppercase tracking-wider text-primary">Mia diz</p>
+          <p className="text-[11px] uppercase tracking-wider text-primary">Fluppy diz</p>
           <p className="mt-0.5 text-sm leading-snug text-foreground/85">
             {mascotMood === "celebrate"
               ? `Você está arrasando! ${profile?.streak ?? 0} dias seguidos 💗`
               : mascotMood === "happy"
-                ? "Obrigada por se cuidar hoje. Tô orgulhosa de você ✨"
+                ? (user?.email === "dudu07andrade23@gmail.com"
+                    ? "Obrigado por se cuidar hoje. Tô orgulhoso de você ✨"
+                    : "Obrigada por se cuidar hoje. Tô orgulhosa de você ✨")
                 : mascotMood === "sleepy"
                   ? "Que tal começar um streak hoje? Toque em registrar 🌸"
                   : "Que bom te ver de novo. Como você tá hoje?"}
@@ -212,12 +214,16 @@ function HomePage() {
             </>
           ) : (
             <>
-              <p className="text-[11px] uppercase tracking-wider opacity-80">Bem-vinda</p>
+              <p className="text-[11px] uppercase tracking-wider opacity-80">
+                {user?.email === "dudu07andrade23@gmail.com" ? "Visualizando" : "Bem-vinda"}
+              </p>
               <h2 className="mt-1 font-display text-2xl font-light">
-                Configure seu ciclo
+                {user?.email === "dudu07andrade23@gmail.com" ? "Registros do(a) parceiro(a)" : "Configure seu ciclo"}
               </h2>
               <p className="mt-2 text-sm opacity-90">
-                Toque na engrenagem acima para começar.
+                {user?.email === "dudu07andrade23@gmail.com"
+                  ? "Aguardando que o(a) parceiro(a) registre dados."
+                  : "Toque na engrenagem acima para começar."}
               </p>
             </>
           )}
@@ -306,6 +312,7 @@ function HomePage() {
       />
 
       {/* FAB */}
+      {user?.email === "sabrinykmendes@gmail.com" && (
       <motion.button
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -318,8 +325,9 @@ function HomePage() {
         <Plus className="h-5 w-5" />
         Registrar hoje
       </motion.button>
+      )}
 
-      <QuickLogDrawer open={openLog} onOpenChange={setOpenLog} />
+      {user?.email === "sabrinykmendes@gmail.com" && <QuickLogDrawer open={openLog} onOpenChange={setOpenLog} />}
       <BadgesModal open={openBadges} onClose={() => setOpenBadges(false)} />
       <QuizModal quiz={openQuiz ? dailyQuiz : null} onClose={() => setOpenQuiz(false)} />
     </div>

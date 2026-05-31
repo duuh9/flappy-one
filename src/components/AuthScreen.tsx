@@ -101,7 +101,7 @@ export function AuthScreen() {
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-3xl bg-gradient-warm shadow-glow">
             <Heart className="h-6 w-6 text-primary-foreground" fill="currentColor" />
           </div>
-          <h1 className="font-display text-3xl font-light tracking-tight">Nós Dois</h1>
+          <h1 className="font-display text-3xl font-light tracking-tight">Fluppy</h1>
           <p className="mt-2 text-sm text-muted-foreground">Ciclo, humor e relação — com leveza.</p>
         </div>
 

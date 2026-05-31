@@ -28,18 +28,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Nós Dois — Ciclo, humor e relação" },
+      { title: "Fluppy — Ciclo, humor e relação" },
       { name: "description", content: "Acompanhe seu ciclo, humor e fortaleça a relação a dois com insights diários baseados em ciência." },
-      { name: "theme-color", content: "#c9a0dc" },
-      { property: "og:title", content: "Nós Dois" },
+      { name: "theme-color", content: "#7B2CBF" },
+      { property: "og:title", content: "Fluppy" },
       { property: "og:description", content: "Ciclo, humor e relação a dois — com leveza." },
       { property: "og:type", content: "website" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "icon", href: "/icon-192.png", type: "image/png" },
-      { rel: "apple-touch-icon", href: "/icon-192.png" },
+      { rel: "icon", href: "/fluppy-icon-192.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/fluppy-icon-192.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Figtree:wght@400;500;600;700&display=swap" },
@@ -52,7 +52,7 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className="dark">
       <head><HeadContent /></head>
       <body>{children}<Scripts /></body>
     </html>

@@ -15,7 +15,7 @@ import { HimSection } from "@/components/HimSection";
 
 export const Route = createFileRoute("/nos-dois")({
   component: TogetherPage,
-  head: () => ({ meta: [{ title: "Nós Dois — Para o casal" }] }),
+  head: () => ({ meta: [{ title: "Fluppy — Para o casal" }] }),
 });
 
 function TogetherPage() {
@@ -50,7 +50,7 @@ function TogetherPage() {
     <div className="space-y-6 pb-8">
       <header>
         <p className="text-[11px] uppercase tracking-wider text-muted-foreground">A dois</p>
-        <h1 className="mt-1 font-display text-3xl font-light">Nós Dois</h1>
+        <h1 className="mt-1 font-display text-3xl font-light">Fluppy</h1>
         {lastPeriod && (
           <p className="mt-1 text-sm text-muted-foreground">
             Fase atual:{" "}

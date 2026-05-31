@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useQuizzes } from "@/hooks/useQuizzes";
 import type { Quiz } from "@/lib/quizzes";
 import { cn } from "@/lib/utils";
+import { Mascot } from "@/components/Mascot";
 
 interface QuizModalProps {
   quiz: Quiz | null;
@@ -19,6 +20,7 @@ export function QuizModal({ quiz, onClose }: QuizModalProps) {
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [showExplanation, setShowExplanation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [resultData, setResultData] = useState<{ correctCount: number; total: number; pointsAwarded: number } | null>(null);
   const { submit } = useQuizzes();
 
   // Reset when quiz changes
@@ -65,12 +67,16 @@ export function QuizModal({ quiz, onClose }: QuizModalProps) {
       const result = await submit(quiz.id, quiz.questions.length, correctCount);
       if (result.alreadyDone) {
         toast.info("Você já completou este quiz!");
+        onClose();
       } else {
-        toast.success(
-          `Quiz completo! ${correctCount}/${quiz.questions.length} acertos (${result.pointsAwarded} pts)`,
-        );
+        // show overlay with Fluppy and result
+        setResultData({ correctCount, total: quiz.questions.length, pointsAwarded: result.pointsAwarded });
+        // auto-close after a short animation
+        setTimeout(() => {
+          setResultData(null);
+          onClose();
+        }, 2400);
       }
-      onClose();
     } catch (error) {
       toast.error("Erro ao salvar resultado. Tente novamente.");
     } finally {
@@ -81,6 +87,32 @@ export function QuizModal({ quiz, onClose }: QuizModalProps) {
   return (
     <Dialog open={!!quiz} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
+          {resultData && (
+            <AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.92, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.92, y: -12 }}
+                transition={{ type: "spring", stiffness: 400, damping: 26 }}
+                className="pointer-events-none fixed left-1/2 top-20 z-50 -translate-x-1/2 w-[min(720px,92%)] rounded-3xl bg-gradient-to-br from-primary to-accent p-4 text-primary-foreground shadow-glow"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-20 shrink-0">
+                    <Mascot mood="celebrate" size="sm" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs uppercase tracking-wider">Fluppy diz</p>
+                    <h3 className="text-xl font-medium">
+                      Você fez {resultData.correctCount}/{resultData.total} acertos · {resultData.pointsAwarded} pts
+                    </h3>
+                    <p className="text-sm mt-1">
+                      {resultData.correctCount === resultData.total ? "Parabéns! Mandou bem demais 🎉" : "Boa! Continue tentando para melhorar."}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          )}
         {/* Header */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
